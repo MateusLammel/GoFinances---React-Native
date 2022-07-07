@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
 import { HighlightCard } from "../../components/HighlightCard";
-import { Title } from "../../components/HighlightCard/styles";
+import {
+  TransactionCard,
+  TransactionCardProps,
+} from "../../components/TransactionCard";
 import {
   Container,
   Header,
@@ -15,9 +17,50 @@ import {
   HighLightCardContainer,
   Transactions,
   TitleList,
+  TransactionList,
 } from "./styles";
 
+export interface DataListProps extends TransactionCardProps {
+  id: string;
+}
+
 export const Dashboard = () => {
+  const data: DataListProps[] = [
+    {
+      id: "1",
+      type: "positive",
+      title: "Desenvolvimento de sistema",
+      amount: "R$ 17.000,00",
+      category: {
+        name: "Entrada",
+        icon: "dollar-sign",
+      },
+      date: "12/03/2022",
+    },
+    {
+      id: "2",
+      type: "negative",
+      title: "Desenvolvimento de sistema",
+      amount: "R$ 200,00",
+      category: {
+        name: "Alimentação",
+        icon: "coffe",
+      },
+      date: "12/03/2022",
+    },
+    {
+      id: "3",
+      type: "positive",
+      title: "Desenvolvimento de sistema",
+      amount: "R$ 12.000,00",
+      category: {
+        name: "Entrada",
+        icon: "shopping-bag",
+      },
+      date: "12/03/2022",
+    },
+  ];
+
   return (
     <Container>
       <Header>
@@ -61,6 +104,14 @@ export const Dashboard = () => {
 
       <Transactions>
         <TitleList>Listagem</TitleList>
+
+        <TransactionList
+          data={data}
+          key={(item) => item.id}
+          renderItem={({ item }) => (
+            <TransactionCard data={item}></TransactionCard>
+          )}
+        />
       </Transactions>
     </Container>
   );
