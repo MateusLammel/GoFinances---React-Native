@@ -7,10 +7,11 @@ interface Props extends TouchableOpacityProps {
   title: string;
 }
 
-export const CategorySelect= ({ ...rest }: Props) => {
-  return <Container>;
-
-    <Category></Category>
-    <Icon name="chevron-down"></Icon>
+export const CategorySelectButton = ({ ...rest }: Props) => {
+  return (
+    <Container>
+      <Category></Category>
+      <Icon name="chevron-down"></Icon>
     </Container>
+  );
 };
