@@ -5,12 +5,13 @@ import { Container, Icon } from "./styles";
 
 interface Props extends TouchableOpacityProps {
   title: string;
+  onPress: () => void;
 }
 
-export const CategorySelectButton = ({ ...rest }: Props) => {
+export const CategorySelectButton = ({ onPress, title, ...rest }: Props) => {
   return (
-    <Container>
-      <Category></Category>
+    <Container onPess={onPress}>
+      <Category>{title}</Category>
       <Icon name="chevron-down"></Icon>
     </Container>
   );

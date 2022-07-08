@@ -1,0 +1,14 @@
+import { TextInput } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
+import styled from "styled-components/native";
+
+export const Container = styled(TextInput)`
+  width: 100%;
+`;
+
+export const Error = styled.Text`
+  font-size: ${RFValue(14)}px;
+  font-family: ${({ theme }) => theme.fonts.regultar};
+  color: ${({ theme }) => theme.colors.attention};
+  margin: 7px 0;
+`;
