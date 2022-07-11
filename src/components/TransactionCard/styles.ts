@@ -34,7 +34,7 @@ export const Footer = styled.View`
   margin-top: 19px;
 `;
 
-export const Category = styled.View`
+export const Category = styled.Text`
   flex-direction: row;
   align-items: center;
 `;

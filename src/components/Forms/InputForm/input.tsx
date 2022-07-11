@@ -1,13 +1,13 @@
 import React from "react";
 import { Container, Error } from "./styles";
 import { TextInputProps } from "react-native";
-import { Input } from "../Input/input";
+import { Input } from "../Input";
 import { Control, Controller } from "react-hook-form";
 
 interface Props extends TextInputProps {
   control: Control;
   name: string;
-  error: string;
+  error: any;
 }
 
 export const InputForm = ({ control, name, error, ...rest }: Props) => {
