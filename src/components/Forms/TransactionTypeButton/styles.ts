@@ -1,7 +1,7 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled, { css } from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 
 interface IconProps {
   type: "up" | "down";
@@ -15,7 +15,7 @@ interface ContainerProps {
 export const Container = styled.View<ContainerProps>`
   width: 48%;
 
-  border-width: ${({ isActive, type }) => (isActive ? 0 : 1)}px;
+  border-width: ${({ isActive }) => (isActive ? 0 : 1)}px;
   border-style: solid;
   border-color: ${({ theme }) => theme.colors.text};
 

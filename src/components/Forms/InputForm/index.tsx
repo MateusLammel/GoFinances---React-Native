@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Error } from "./styles";
 import { TextInputProps } from "react-native";
 import { Control, Controller } from "react-hook-form";
-import { Input } from "../Input";
+import { Input } from "../Input/input";
 
 interface Props extends TextInputProps {
   control: Control;

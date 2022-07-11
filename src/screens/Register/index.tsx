@@ -7,6 +7,7 @@ import {
   Fields,
   Form,
   Header,
+  Teste,
   Title,
   TransactionTypes,
 } from "./styles";
@@ -17,6 +18,7 @@ import { InputForm } from "../../components/Forms/InputForm";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { TouchableOpacity } from "react-native-gesture-handler";
 interface FormData {
   name: string;
   amount: string;
@@ -74,50 +76,52 @@ export const Register = () => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  
       <Container>
         <Header>
           <Title>Cadastro</Title>
         </Header>
-
         <Form>
           <Fields>
             <InputForm
               name="name"
-              placeholder="Nome"
               control={control}
+              placeholder="Nome"
               autoCapitalize="sentences"
               autoCorrect={false}
               error={errors.name && errors.name.message}
             />
             <InputForm
               name="amount"
-              placeholder="Valor"
               control={control}
+              placeholder="Preço"
               keyboardType="numeric"
               error={errors.amount && errors.amount.message}
             />
             <TransactionTypes>
               <TransactionTypeButton
                 type="up"
-                title="Income"
-                onPress={() => handleTransactionTypeSelect("up")}
+                title="Entrada"
                 isActive={transactionType === "up"}
+                onPress={() => handleTransactionTypeSelect("up")}
               />
               <TransactionTypeButton
                 type="down"
-                title="Outome"
-                onPress={() => handleTransactionTypeSelect("down")}
+                title="Saída"
                 isActive={transactionType === "down"}
+                onPress={() => handleTransactionTypeSelect("down")}
               />
             </TransactionTypes>
+
             <CategorySelectButton
-              onPress={() => setCategoryModalOpen(true)}
               title={category.name}
+              onPress={handleOpenSelectCategory}
             />
           </Fields>
-          <Button title="Enviar" onPress={() => handleSubmit(handleRegister)} />
+          
+          <Button title="Enviar" onPress={() => Alert.alert("ola")} />
         </Form>
+
         <Modal visible={categoryModalOpen}>
           <CategorySelect
             category={category}
@@ -126,6 +130,6 @@ export const Register = () => {
           />
         </Modal>
       </Container>
-    </TouchableWithoutFeedback>
+  
   );
 };

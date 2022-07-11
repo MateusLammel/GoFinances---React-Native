@@ -1,3 +1,4 @@
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
@@ -37,4 +38,10 @@ export const TransactionTypes = styled.View`
   justify-content: space-between;
   margin-top: 8px;
   margin-bottom: 16px;
+`;
+
+export const Teste = styled(TouchableOpacity)`
+  width: 100px;
+  height: 20px;
+  background-color: green;
 `;
