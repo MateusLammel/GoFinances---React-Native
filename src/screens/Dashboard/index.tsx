@@ -29,7 +29,7 @@ export const Dashboard = () => {
   const data: DataListProps[] = [
     {
       id: "1",
-      type: "positive",
+      type: "up",
       title: "Desenvolvimento de sistema",
       amount: "R$ 17.000,00",
       category: {
@@ -40,7 +40,7 @@ export const Dashboard = () => {
     },
     {
       id: "2",
-      type: "negative",
+      type: "down",
       title: "Desenvolvimento de sistema",
       amount: "R$ 200,00",
       category: {
@@ -51,7 +51,7 @@ export const Dashboard = () => {
     },
     {
       id: "3",
-      type: "positive",
+      type: "up",
       title: "Desenvolvimento de sistema",
       amount: "R$ 12.000,00",
       category: {

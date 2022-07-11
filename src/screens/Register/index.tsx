@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../../components/Forms/Button";
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
-import { Input } from "../../components/Forms/Input";
 import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton";
 import {
   Container,
@@ -14,7 +13,7 @@ import {
 
 import { CategorySelect } from "../CategorySelect/index";
 import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
-import { InputForm } from "../../components/Forms/InputForm/input";
+import { InputForm } from "../../components/Forms/InputForm";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -113,11 +112,11 @@ export const Register = () => {
               />
             </TransactionTypes>
             <CategorySelectButton
-              onPress={handleOpenSelectCategory}
+              onPress={() => setCategoryModalOpen(true)}
               title={category.name}
             />
           </Fields>
-          <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
+          <Button title="Enviar" onPress={() => handleSubmit(handleRegister)} />
         </Form>
         <Modal visible={categoryModalOpen}>
           <CategorySelect
