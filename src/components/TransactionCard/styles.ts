@@ -4,7 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import React from "react";
 
 interface TransactionProps {
-  type: "positive" | "neative";
+  type: "up" | "down";
 }
 
 export const Container = styled.View`
@@ -24,7 +24,7 @@ export const Amount = styled.Text<TransactionProps>`
   margin-top: 2px;
   font-family: ${({ theme }) => theme.fonts.regular};
   color: ${({ theme, type }) =>
-    type === "positive" ? theme.colors.success : theme.colors.atttention};
+    type === "up" ? theme.colors.success : theme.colors.attention};
 `;
 
 export const Footer = styled.View`

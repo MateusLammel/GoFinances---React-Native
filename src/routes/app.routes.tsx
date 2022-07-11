@@ -16,7 +16,7 @@ export function AppRoutes() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.colors.secondary,
-        tabBarInactiveTintColor: theme.colors.shape,
+        tabBarInactiveTintColor: theme.colors.text,
         tabBarLabelPosition: "beside-icon",
         tabBarStyle: {
           height: 88,

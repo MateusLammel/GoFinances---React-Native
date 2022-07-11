@@ -9,7 +9,7 @@ interface TypeProps {
 
 export const Container = styled.View<TypeProps>`
   background: ${({ theme, type }) =>
-    type === "total" ? theme.colors.secondary : theme.colors.background};
+    type === "total" ? theme.colors.secondary : theme.colors.shape};
 
   width: ${RFValue(295)}px;
   border-radius: 5px;
@@ -35,18 +35,20 @@ export const Icon = styled(Feather)<TypeProps>`
   ${(props) =>
     props.type === "up" &&
     css`
-      ${({ theme }) => theme.colors.success}
-    `}
+      color: ${({ theme }) => theme.colors.success};
+    `};
+
   ${(props) =>
     props.type === "down" &&
     css`
-      ${({ theme }) => theme.colors.atttention}
-    `}
-    ${(props) =>
+      color: ${({ theme }) => theme.colors.attention};
+    `};
+
+  ${(props) =>
     props.type === "total" &&
     css`
-      ${({ theme }) => theme.colors.shape}
-    `}
+      color: ${({ theme }) => theme.colors.shape};
+    `};
 `;
 
 export const Footer = styled.View``;

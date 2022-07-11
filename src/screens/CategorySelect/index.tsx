@@ -12,6 +12,7 @@ import {
   Name,
   Separator,
   Footer,
+  FlatListContainer,
 } from "./styles";
 
 interface Category {
@@ -40,20 +41,23 @@ export const CategorySelect = ({
         <Title>Categoria</Title>
       </Header>
 
-      <FlatList
-        data={categories}
-        style={{ flex: 1, width: "100%" }}
-        keyExtractor={(item) => item.key}
-        renderItem={({ item }) => (
-          <Category onPress={() => handleCategorySelect(item)}
-          isActive={category.key === item.key}>
-            <Icon name={item.icon} />
-            <Name>{item.name}</Name>
-          </Category>
-        )}
-        ItemSeparatorComponent={() => <Separator />}
-      ></FlatList>
-
+      <FlatListContainer>
+        <FlatList
+          data={categories}
+          style={{ width: "100%" }}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item }) => (
+            <Category
+              onPress={() => handleCategorySelect(item)}
+              isActive={category.key === item.key}
+            >
+              <Icon name={item.icon} />
+              <Name>{item.name}</Name>
+            </Category>
+          )}
+          ItemSeparatorComponent={() => <Separator />}
+        ></FlatList>
+      </FlatListContainer>
       <Footer>
         <Button onPress={closeSelectCategory} title="Selecionar" />
       </Footer>
