@@ -110,6 +110,7 @@ export const Dashboard = () => {
       transactions,
       "down"
     );
+    const totalInterval = `01 a ${lastTransactionExpenses}`;
 
     const total = entriesTotal - expensesTotal;
 
@@ -133,7 +134,7 @@ export const Dashboard = () => {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: "",
+        lastTransaction: totalInterval,
       },
     });
 
@@ -195,7 +196,7 @@ export const Dashboard = () => {
               type="total"
               title="Total"
               amount={highLightData.total.amount}
-              lastTransaction="Última entrada dia 11"
+              lastTransaction={highLightData.total.lastTransaction}
             />
           </HighLightCardContainer>
 
