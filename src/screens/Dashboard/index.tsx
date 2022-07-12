@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HighlightCard } from "../../components/HighlightCard";
 import {
   TransactionCard,
@@ -19,24 +19,51 @@ import {
   TitleList,
   TransactionList,
   LogoutButton,
+  LoadContainer,
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useFocusEffect } from "@react-navigation/native";
+import { ActivityIndicator } from "react-native";
+import { useTheme } from "styled-components";
 export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
+interface HighLightProps {
+  amount: string;
+}
+interface HighLightData {
+  entries: HighLightProps;
+  expenses: HighLightProps;
+  total: HighLightProps;
+}
+
 export const Dashboard = () => {
-  const [data, setData] = useState<DataListProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactions, setTransactions] = useState<DataListProps[]>([]);
+  const [highLightData, setHighLightData] = useState<HighLightData>(
+    {} as HighLightData
+  );
+  const theme = useTheme();
 
   async function loadTransactions() {
     const dataKey = "@gofinances:transactions";
     const response = await AsyncStorage.getItem(dataKey);
-
     const transactions = response ? JSON.parse(response) : [];
+
+    let entriesTotal = 0;
+    let expensesTotal = 0;
 
     const transactionsFormatted: DataListProps[] = transactions.map(
       (item: DataListProps) => {
+
+        console.log(item)
+        if (item.type === "up") {
+          entriesTotal += Number(item.amount);
+        } else {
+          expensesTotal += Number(item.amount);
+        }
+
         const amount = Number(item.amount).toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
@@ -58,69 +85,117 @@ export const Dashboard = () => {
         };
       }
     );
+    setTransactions(transactionsFormatted);
 
-    setData(transactionsFormatted);
+    const lastTransactionEntries = Math.max.apply(
+      Math,
+      transactions
+        .filter((transaction: DataListProps) => transaction.type === "up")
+        .map((transaction: DataListProps) =>
+          new Date(transaction.date).getTime()
+        )
+    );
+
+    console.log(transactions);
+
+    const total = entriesTotal - expensesTotal;
+
+    setHighLightData({
+      entries: {
+        amount: entriesTotal.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+      },
+      expenses: {
+        amount: expensesTotal.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+      },
+      total: {
+        amount: total.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+      },
+    });
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
     loadTransactions();
-   
   }, []);
- console.log(data);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTransactions();
+    }, [])
+  );
+
   return (
     <Container>
-      <Header>
-        <UserWrapper>
-          <UserInfo>
-            <Photo
-              source={{
-                uri: "https://avatars.githubusercontent.com/u/92732240?v=4",
-              }}
+      {isLoading ? (
+        <LoadContainer>
+          <ActivityIndicator color={theme.colors.primary} size="large" />
+        </LoadContainer>
+      ) : (
+        <>
+          <Header>
+            <UserWrapper>
+              <UserInfo>
+                <Photo
+                  source={{
+                    uri: "https://avatars.githubusercontent.com/u/92732240?v=4",
+                  }}
+                />
+
+                <User>
+                  <UserGreetings>Olá,</UserGreetings>
+                  <UserName>Mateus</UserName>
+                </User>
+              </UserInfo>
+              <LogoutButton onPress={() => {}}>
+                <Icon name="power" />
+              </LogoutButton>
+            </UserWrapper>
+          </Header>
+
+          <HighLightCardContainer>
+            <HighlightCard
+              type="up"
+              title="Entradas"
+              amount={highLightData.entries.amount}
+              lastTransaction="Última entrada dia 13"
             />
+            <HighlightCard
+              type="down"
+              title="Saídas"
+              amount={highLightData.expenses.amount}
+              lastTransaction="Última entrada dia 11"
+            />
+            <HighlightCard
+              type="total"
+              title="Total"
+              amount={highLightData.total.amount}
+              lastTransaction="Última entrada dia 11"
+            />
+          </HighLightCardContainer>
 
-            <User>
-              <UserGreetings>Olá,</UserGreetings>
-              <UserName>Mateus</UserName>
-            </User>
-          </UserInfo>
-          <LogoutButton onPress={() => {}}>
-            <Icon name="power" />
-          </LogoutButton>
-        </UserWrapper>
-      </Header>
+          <Transactions>
+            <TitleList>Listagem</TitleList>
 
-      <HighLightCardContainer>
-        <HighlightCard
-          type="up"
-          title="Entradas"
-          amount="R$ 17.000,00"
-          lastTransaction="Última entrada dia 13"
-        />
-        <HighlightCard
-          type="down"
-          title="Saídas"
-          amount="R$ 2.000,00"
-          lastTransaction="Última entrada dia 11"
-        />
-        <HighlightCard
-          type="total"
-          title="Total"
-          amount="R$ 15.000,00"
-          lastTransaction="Última entrada dia 11"
-        />
-      </HighLightCardContainer>
-
-      <Transactions>
-        <TitleList>Listagem</TitleList>
-
-        <TransactionList
-          data={data}
-          key={(item) => item.id}
-          renderItem={({ item }) => (
-            <TransactionCard data={item}></TransactionCard>
-          )}
-        />
-      </Transactions>
+            <TransactionList
+              data={transactions}
+              key={(item) => item.id}
+              renderItem={({ item }) => (
+                <TransactionCard data={item}></TransactionCard>
+              )}
+            />
+          </Transactions>
+        </>
+      )}
     </Container>
   );
 };
