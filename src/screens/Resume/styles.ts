@@ -2,6 +2,7 @@ import { BorderlessButton, ScrollView } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
@@ -38,7 +39,7 @@ export const MonthSelect = styled.View`
   margin-top: 24px;
 `;
 
-export const MonthSelectButton = styled(BorderlessButton)``;
+export const MonthSelectButton = styled(TouchableOpacity)``;
 
 export const MonthSelectIcon = styled(Feather)`
   font-size: ${RFValue(22)}px;

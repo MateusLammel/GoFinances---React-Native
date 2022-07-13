@@ -101,13 +101,10 @@ export const Register = () => {
   }
 
   useEffect(() => {
-    
-
     async function loadData() {
       const data = await AsyncStorage.getItem(dataKey);
       console.log(JSON.parse(data!));
     }
-
 
     loadData();
   }, []);
