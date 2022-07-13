@@ -22,6 +22,7 @@ import { format, subMonths } from "date-fns/esm";
 import { ptBR } from "date-fns/locale";
 import { useFocusEffect } from "@react-navigation/native";
 import { LoadContainer } from "../Dashboard/styles";
+import { ActivityIndicator } from "react-native";
 
 interface TransactionData {
   type: "up" | "down";
