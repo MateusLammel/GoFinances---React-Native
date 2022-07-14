@@ -25,6 +25,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native";
 import { useTheme } from "styled-components";
+import { useAuth } from "../../hooks/auth";
 export interface DataListProps extends TransactionCardProps {
   id: string;
 }
@@ -46,6 +47,7 @@ export const Dashboard = () => {
     {} as HighLightData
   );
   const theme = useTheme();
+  const { signOut, user } = useAuth();
 
   function getLastTransactionDate(
     collection: DataListProps[],
@@ -141,6 +143,7 @@ export const Dashboard = () => {
     setIsLoading(false);
   }
 
+  console.log(user.name)
   useEffect(() => {
     loadTransactions();
   }, []);
@@ -173,7 +176,7 @@ export const Dashboard = () => {
                   <UserName>Mateus</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={() => {signOut}}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
