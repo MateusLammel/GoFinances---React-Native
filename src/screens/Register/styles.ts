@@ -1,6 +1,11 @@
+import { ReactNode } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
+
+type GestureHandlerProps = {
+  children: ReactNode;
+};
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.background};

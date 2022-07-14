@@ -5,6 +5,7 @@ import {
   Container,
   Content,
   Header,
+  LoadContainer,
   Month,
   MonthSelect,
   MonthSelectButton,
@@ -13,16 +14,15 @@ import {
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { categories } from "../../utils/categories";
+import { ActivityIndicator, ScrollView } from "react-native";
 import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { addMonths } from "date-fns";
-import { format, subMonths } from "date-fns/esm";
+import { addMonths, format, subMonths } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useFocusEffect } from "@react-navigation/native";
-import { LoadContainer } from "../Dashboard/styles";
-import { ActivityIndicator } from "react-native";
+
 
 interface TransactionData {
   type: "up" | "down";
@@ -43,10 +43,10 @@ interface CategoryData {
 }
 
 export const Resume = () => {
-  const theme = useTheme();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [categoriesList, setCategoriesList] = useState<CategoryData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const theme = useTheme();
+  const [categoriesList, setCategoriesList] = useState<CategoryData[]>([]);
 
   function handleDateChange(action: "next" | "prev") {
     if (action === "next") {
@@ -57,7 +57,7 @@ export const Resume = () => {
   }
 
   async function loadData() {
-    setIsLoading(true);
+       setIsLoading(true);
     const dataKey = "@gofinances:transactions";
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
@@ -109,9 +109,13 @@ export const Resume = () => {
     setCategoriesList(totalByCategory);
     setIsLoading(false);
   }
-  useEffect(() => {
-    loadData();
-  }, [selectedDate]);
+
+ 
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [selectedDate])
+  );
 
   useFocusEffect(
     useCallback(() => {
