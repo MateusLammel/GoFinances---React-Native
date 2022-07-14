@@ -43,7 +43,9 @@ export const TransactionTypes = styled.View`
   margin-bottom: 16px;
 `;
 
-export const Teste = styled(TouchableOpacity)`
+export const Teste = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.7,
+})`
   width: 100px;
   height: 20px;
   background-color: green;

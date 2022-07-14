@@ -39,7 +39,9 @@ export const MonthSelect = styled.View`
   margin-top: 24px;
 `;
 
-export const MonthSelectButton = styled(TouchableOpacity)``;
+export const MonthSelectButton = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.7,
+})``;
 
 export const MonthSelectIcon = styled(Feather)`
   font-size: ${RFValue(22)}px;

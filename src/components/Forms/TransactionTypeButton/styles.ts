@@ -36,7 +36,9 @@ export const Container = styled.View<ContainerProps>`
     `}
 `;
 
-export const Button = styled(TouchableOpacity)`
+export const Button = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.7,
+})`
   flex-direction: row;
   align-items: center;
   justify-content: center;
