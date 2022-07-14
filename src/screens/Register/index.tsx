@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Forms/Button";
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
 import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton";
@@ -12,19 +12,22 @@ import {
 } from "./styles";
 
 import { CategorySelect } from "../CategorySelect/index";
-import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
+import { Alert, Modal } from "react-native";
 import { InputForm } from "../../components/Forms/InputForm";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 interface FormData {
   name: string;
   amount: string;
 }
-
+type Nav = {
+  navigate: (value: string) => void;
+};
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Nome é obrigatório"),
   amount: Yup.number()
@@ -33,8 +36,6 @@ const validationSchema = Yup.object().shape({
     .required("O valor é obrigatório"),
 });
 
-const dataKey = "@gofinances:transactions";
-
 export const Register = () => {
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -42,7 +43,9 @@ export const Register = () => {
     key: "category",
     name: "Categoria",
   });
-  const navigation = useNavigation();
+  const navigation = useNavigation<Nav>();
+  const { user } = useAuth();
+  const dataKey = `@gofinances:transactions_user: ${user.id}`;
   const {
     control,
     handleSubmit,
@@ -93,7 +96,7 @@ export const Register = () => {
       setTransactionType("");
       setCategory({ key: "category", name: "Categoria" });
 
-      navigation.navigate("Listagem", {});
+      navigation.navigate("Listagem");
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possível salvar");
@@ -103,7 +106,6 @@ export const Register = () => {
   useEffect(() => {
     async function loadData() {
       const data = await AsyncStorage.getItem(dataKey);
-      console.log(JSON.parse(data!));
     }
 
     loadData();

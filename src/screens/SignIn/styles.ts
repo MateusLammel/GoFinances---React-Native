@@ -2,7 +2,7 @@ import { BorderlessButton, ScrollView } from "react-native-gesture-handler";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 
 export const Container = styled.View`
   flex: 1;
@@ -10,7 +10,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   width: 100%;
-  height: 70%;
+  height: ${Platform.OS == "ios" ? "70%" : "77.5%" } ;
   background-color: ${({ theme }) => theme.colors.primary};
   justify-content: flex-end;
   align-items: center;

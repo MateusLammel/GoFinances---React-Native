@@ -1,7 +1,6 @@
 import React from "react";
 import { TouchableOpacityProps } from "react-native";
-import { Category } from "../../TransactionCard/styles";
-import { Container, Icon } from "./styles";
+import { Container, Icon, Title } from "./styles";
 
 interface Props extends TouchableOpacityProps {
   title: string;
@@ -10,7 +9,7 @@ interface Props extends TouchableOpacityProps {
 export const CategorySelectButton = ({ onPress, title, ...rest }: Props) => {
   return (
     <Container onPress={onPress}>
-      <Category>{title}</Category>
+      <Title>{title}</Title>
       <Icon name="chevron-down"></Icon>
     </Container>
   );

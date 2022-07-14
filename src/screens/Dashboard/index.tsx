@@ -47,12 +47,21 @@ export const Dashboard = () => {
     {} as HighLightData
   );
   const theme = useTheme();
+
   const { signOut, user } = useAuth();
 
   function getLastTransactionDate(
     collection: DataListProps[],
     type: "up" | "down"
   ) {
+    const collectionFilttered = collection.filter(
+      (transaction) => transaction.type === type
+    );
+
+    if (collectionFilttered.length == 0) {
+      return 0;
+    }
+
     const lastTransaction = new Date(
       Math.max.apply(
         Math,
@@ -69,7 +78,7 @@ export const Dashboard = () => {
   }
 
   async function loadTransactions() {
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_user: ${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -112,7 +121,10 @@ export const Dashboard = () => {
       transactions,
       "down"
     );
-    const totalInterval = `01 a ${lastTransactionExpenses}`;
+    const totalInterval =
+      lastTransactionExpenses === 0
+        ? "Não há transações"
+        : `01 a ${lastTransactionExpenses}`;
 
     const total = entriesTotal - expensesTotal;
 
@@ -122,14 +134,20 @@ export const Dashboard = () => {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionEntries}`,
+        lastTransaction:
+          lastTransactionEntries == 0
+            ? "Não há transações"
+            : `Última entrada dia ${lastTransactionEntries}`,
       },
       expenses: {
         amount: expensesTotal.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpenses}`,
+        lastTransaction:
+          lastTransactionExpenses == 0
+            ? "Não há transações"
+            : `Última saída dia ${lastTransactionExpenses}`,
       },
       total: {
         amount: total.toLocaleString("pt-BR", {
@@ -143,7 +161,6 @@ export const Dashboard = () => {
     setIsLoading(false);
   }
 
-  console.log(user.name)
   useEffect(() => {
     loadTransactions();
   }, []);
@@ -167,16 +184,16 @@ export const Dashboard = () => {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: "https://avatars.githubusercontent.com/u/92732240?v=4",
+                    uri: user.photo,
                   }}
                 />
 
                 <User>
                   <UserGreetings>Olá,</UserGreetings>
-                  <UserName>Mateus</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {signOut}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { HistoryCard } from "../../components/HistoryCard";
 import {
   ChartContainer,
@@ -14,7 +14,7 @@ import {
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { categories } from "../../utils/categories";
-import { ActivityIndicator, ScrollView } from "react-native";
+import { ActivityIndicator} from "react-native";
 import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
@@ -22,7 +22,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { addMonths, format, subMonths } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useFocusEffect } from "@react-navigation/native";
-
+import { useAuth } from "../../hooks/auth";
 
 interface TransactionData {
   type: "up" | "down";
@@ -47,6 +47,7 @@ export const Resume = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const theme = useTheme();
   const [categoriesList, setCategoriesList] = useState<CategoryData[]>([]);
+  const { user } = useAuth();
 
   function handleDateChange(action: "next" | "prev") {
     if (action === "next") {
@@ -57,8 +58,8 @@ export const Resume = () => {
   }
 
   async function loadData() {
-       setIsLoading(true);
-    const dataKey = "@gofinances:transactions";
+    setIsLoading(true);
+    const dataKey = `@gofinances:transactions_user: ${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
@@ -110,7 +111,6 @@ export const Resume = () => {
     setIsLoading(false);
   }
 
- 
   useFocusEffect(
     useCallback(() => {
       loadData();
@@ -162,7 +162,7 @@ export const Resume = () => {
               style={{
                 labels: {
                   fontWeight: "bold",
-                  fontSize: RFValue(18),
+                  fontSize: RFValue(18)+"px",
                   fill: theme.colors.shape,
                 },
               }}

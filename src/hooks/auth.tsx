@@ -21,6 +21,7 @@ interface IAuthContextData {
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
   signOut(): Promise<void>;
+  loading: boolean;
 }
 
 interface User {
@@ -60,7 +61,6 @@ function AuthProvider({ children }: AuthProviderProps) {
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`
         );
         const userInfo = await response.json();
-        console.log(userInfo);
 
         const userLogged = {
           email: userInfo.email,
@@ -103,7 +103,12 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     setUser({} as User);
-    await AsyncStorage.removeItem(userStorageKey);
+
+    try {
+      await AsyncStorage.removeItem(userStorageKey);
+    } catch (error: any) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -126,6 +131,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         signInWithGoogle,
         signInWithApple,
         signOut,
+        loading,
       }}
     >
       {children}
@@ -135,7 +141,6 @@ function AuthProvider({ children }: AuthProviderProps) {
 
 function useAuth() {
   const context = useContext(AuthContext);
-
   return context;
 }
 
